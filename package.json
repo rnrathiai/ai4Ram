@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/rnrathiai/ai4Ram/issues"
   },
-  "homepage": "https://github.com/rnrathiai/ai4Ram#readme"
+  "homepage": "https://github.com/rnrathiai/ai4Ram#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2"
+  }
 }
