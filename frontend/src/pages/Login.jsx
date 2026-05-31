@@ -6,11 +6,11 @@ const users = [
     { username: "JOHN1", email: "john@email.com", password: "Password1", isLoggedIn: false },
 ];
 
-function Login(){
+function Login({onLoginSuccess}){
     const [username,setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    
 
     function handleSubmit(){
 
@@ -27,26 +27,11 @@ function Login(){
         }
         
         // Success
-        setError("");
-        setIsLoggedIn(true);
+        onLoginSuccess(found.username)
         console.log("Logged in " + found);
 
     }
 
-    if (isLoggedIn){
-        return(
-             <div className="login-container">
-                <h2>Welcome back, {username.toUpperCase()}! 👋</h2>
-                <p>You are now logged in.</p>
-                <button
-                    className="login-btn"
-                    onClick={() => setIsLoggedIn(false)}
-                >
-                    Logout
-                </button>
-            </div>
-        );
-    }
 
     return(
         <div className="login-container">
