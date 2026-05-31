@@ -1,3 +1,4 @@
+import Login from "./pages/Login"
 import SignUp from "./pages/SignUp"
 
 
@@ -7,6 +8,7 @@ function App(){
     <div>
       <h1>AI 4 Ram</h1>
       <SignUp />
+      <Login />
     </div>
   )
 }
