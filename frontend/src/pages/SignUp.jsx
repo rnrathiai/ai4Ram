@@ -36,7 +36,6 @@ function validatePassword(password) {
     return null;
 }
 
-
 function validateUsername(username){
     
     const usernameTrimmed = username.trim().toUpperCase()
@@ -44,8 +43,6 @@ function validateUsername(username){
         return "Username must be 4–20 characters";
     return null
 }
-
-
 
 function SignUp(){
     const [username, setUsername] = useState("");
@@ -56,27 +53,46 @@ function SignUp(){
     function handleUsernameChange(e){
         const value = e.target.value;
         setUsername(value);
-        setErrors(prev => ({...prev, username: validateUsername(value)}));
+        setErrors(prev => ({...prev, username: validateUsername(value), submit:null}));
     }
     function handleEmailChange(e){
         const value = e.target.value;
         setEmail(value);
-        setErrors( prev =>({...prev, email: validateEmail(value)}));
+        setErrors( prev =>({...prev, email: validateEmail(value), submit:null}));
 
     }
     function handlePasswordChange(e){
         const value = e.target.value;
         setPassword(value)
-        setErrors(prev=>({...prev, password: validatePassword(value)}))
+        setErrors(prev=>({...prev, password: validatePassword(value), submit:null}))
 
     }
 
     const isFormValid = !errors.username && !errors.email && !errors.password && 
         username !== "" && email !== "" && password !== "";
 
-    function handleSubmit(){
-        console.log("Successfull Sign up: ", {username, email, password});
-        alert("Sign up Successfull : Welcome " + username.toUpperCase() );
+    async function handleSubmit(){
+        try{
+            const response = await fetch( 'http://localhost:3000/signup',{
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password
+                })
+            });
+
+            const data = await response.json();
+            if (!response.ok){
+                setErrors(prev => ({...prev,submit:data.message}));
+                return;
+            }
+            alert(`Sign up Successfull : Welcome  ${data.user.username}` );
+        }catch (err){
+            setErrors(prev =>({...prev,submit:"Serve error please try again"}));
+            console.log("Server error ", err);
+        }
     }
 
 
@@ -116,7 +132,7 @@ function SignUp(){
                     />
                     {errors.password && <p style={{ color: "red" }}>{errors.password}</p>}
                 </div>
-
+                {errors.submit && <p className="error-text">{errors.submit}</p>}
                 <button
                     className="signup-btn"
                     type="button"
