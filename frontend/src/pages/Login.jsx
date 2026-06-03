@@ -1,10 +1,7 @@
 import {useState} from 'react'
 import './Login.css'
 
-const users = [
-    { username: "RAM1", email: "ram@email.com", password: "Password1", isLoggedIn: false },
-    { username: "JOHN1", email: "john@email.com", password: "Password1", isLoggedIn: false },
-];
+
 
 function Login({onLoginSuccess}){
     const [username,setUsername] = useState("");
@@ -12,23 +9,25 @@ function Login({onLoginSuccess}){
     const [error, setError] = useState("");
     
 
-    function handleSubmit(){
+    async function handleSubmit(){
+        try{
+            const response = await fetch("http://localhost:3000/login",{
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username,password})
+            })
+            const data = await response.json();
+            if (!response.ok){
+                setError(data.message);
+                return
+            }
+            onLoginSuccess(data.user.username);
 
-        // find a user by username
-        const found = users.find(function(user){
-            return user.username === username.trim().toUpperCase();
-        })
-
-        //check if user exists and password matches
-
-        if (!found || found.password !== password){
-            setError("Invalid username or password")
-            return
+        } catch (err){
+            setError("Server error please try again")
+            console.log('Login error ', err);
         }
-        
-        // Success
-        onLoginSuccess(found.username)
-        console.log("Logged in " + found);
+
 
     }
 
@@ -43,7 +42,9 @@ function Login({onLoginSuccess}){
                         type = "text"
                         placeholder='Enter username'
                         value={username}
-                        onChange={e=> setUsername(e.target.value)}                    
+                        onChange={e=> {setUsername(e.target.value);
+                            setError("")
+                        }}                    
                     />
                 </div>
                 <div className="form-group">
@@ -52,7 +53,9 @@ function Login({onLoginSuccess}){
                         type = "password"
                         placeholder='Enter Password'
                         value={password}
-                        onChange={e=> setPassword(e.target.value)}                    
+                        onChange={e=> {setPassword(e.target.value);
+                            setError("")
+                        }}                    
                     />
                 </div>
 
