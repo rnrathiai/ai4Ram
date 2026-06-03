@@ -1,7 +1,7 @@
 require('dotenv').config();
-
 const express = require('express')
 const cors = require('cors')
+const db = require('./database');
 
 
 const app = express();
@@ -29,8 +29,6 @@ app.get('/health', (req, res) => {
 
 // Sign up setup
 
-const users = [];
-
 app.post('/signup', (req, res)=>{
     const {username, email, password} = req.body;
 
@@ -43,42 +41,58 @@ app.post('/signup', (req, res)=>{
         });
     }
 
-    const existingUser = users.find(u=>{
-        return u.username === username.trim().toUpperCase();
-    })
+    const upperUsername = username.trim().toUpperCase();
+    const lowerEmail = email.trim().toLowerCase();
+    
+    //Check if the user already exist
+    const existingUser = db.get('SELECT id, username, email FROM users WHERE username = ? OR email = ?', 
+        [upperUsername, lowerEmail],
+        (err,existingUser)=>{
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    message: "Database error"
+                });
+            }    
+            
+            if (existingUser && existingUser.username === upperUsername){
+                return res.status(409).json({
+                    success:false,
+                    message: "Username already taken"
+                })
+            }
+            if (existingUser && existingUser.email === lowerEmail){
+                return res.status(409).json({
+                    success:false,
+                    message: "Email already registered"
+                })
+            }
 
-    if (existingUser){
-        return res.status(409).json({
-            success: false,
-            message: "Username already taken"
+            db.run('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', 
+                [upperUsername, lowerEmail, password], 
+                function (err){
+                    if (err) {
+                        return res.status(500).json({
+                            success: false,
+                            message: "Error creating user"
+                        });
+                    }
+                    console.log('New user created:', upperUsername);
+                    return res.status(201).json({
+                        success: true,
+                        message: "User created successfully",
+                            user: {
+                                id: this.lastID,
+                                username: upperUsername,
+                                email: lowerEmail
+                            }
+                        });
+                }
+            )
         });
-    }
 
-    //Creating new user
-    const newUser = {
-        id : users.length + 1,
-        username: username.trim().toUpperCase(),
-        email: email.trim().toLowerCase(),
-        password: password,
-        createdAt:  new Date().toISOString()
-    }
 
-    users.push(newUser)
-
-    console.log('New user created:', newUser.username);
-    console.log('Total users:', users.length);
-
-    return res.status(201).json({
-        success: true,
-        message: "User created successfully",
-        user:{
-            id: newUser.id,
-            username: newUser.username,
-            email: newUser.email
-        }
-    });
-
-});
+})
 
 app.post('/login', (req,res) =>{
     const {username, password} = req.body;
@@ -92,36 +106,36 @@ app.post('/login', (req,res) =>{
     }
 
     //Find a user
-    const found = users.find(u=> {
-        return u.username === username.trim().toUpperCase()
-    })
-
-
-    //check user exist and match the passwor
-    if(!found || found.password !== password){
-        return res.status(400).json({
-            success: false,
-            message: "Invalid username or password"
-        })
-    }
-
-    //Success
-    return res.status(200).json({
-        success:true,
-        message: "Login successful",
-        user: {
-            id: found.id,
-            username: found.username,
-            email: found.email
+    const found = db.get('SELECT * FROM users WHERE username = ?',
+        [username.trim().toUpperCase()],
+        (err, found) => {
+            if (err){
+                return res.status(500).json({
+                    success: false,
+                    message: "Database Error"
+                })
+            }
+            //check user exist and match the password
+            if(!found || found.password !== password){
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid username or password"
+                })
+            }
+             //Success
+            return res.status(200).json({
+                success:true,
+                message: "Login successful",
+                user: {
+                    id: found.id,
+                    username: found.username,
+                    email: found.email
+                }
+            })
         }
-    })
-
+    );
 
 })
-
-
-
-
 
 
 
