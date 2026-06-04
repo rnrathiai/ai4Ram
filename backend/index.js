@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express')
 const cors = require('cors')
 const db = require('./database');
+const bcrypt = require('bcryptjs');
 
 
 const app = express();
@@ -68,27 +69,39 @@ app.post('/signup', (req, res)=>{
                 })
             }
 
-            db.run('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', 
-                [upperUsername, lowerEmail, password], 
-                function (err){
-                    if (err) {
-                        return res.status(500).json({
-                            success: false,
-                            message: "Error creating user"
-                        });
-                    }
-                    console.log('New user created:', upperUsername);
-                    return res.status(201).json({
-                        success: true,
-                        message: "User created successfully",
-                            user: {
-                                id: this.lastID,
-                                username: upperUsername,
-                                email: lowerEmail
-                            }
-                        });
+            //Hashing password
+            const saltRound = 10;
+            bcrypt.hash(password,saltRound, function(err, hashedPassword){
+                if(err){
+                    return res.status(500).json({
+                        success: false,
+                        message: "Error processing password"
+                    });
                 }
-            )
+            
+
+                db.run('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', 
+                    [upperUsername, lowerEmail, hashedPassword], 
+                    function (err){
+                        if (err) {
+                            return res.status(500).json({
+                                success: false,
+                                message: "Error creating user"
+                            });
+                        }
+                        console.log('New user created:', upperUsername);
+                        return res.status(201).json({
+                            success: true,
+                            message: "User created successfully",
+                                user: {
+                                    id: this.lastID,
+                                    username: upperUsername,
+                                    email: lowerEmail
+                                }
+                            });
+                    }
+                )
+            })
         });
 
 
@@ -115,23 +128,33 @@ app.post('/login', (req,res) =>{
                     message: "Database Error"
                 })
             }
-            //check user exist and match the password
-            if(!found || found.password !== password){
+ 
+
+            if(!found){
                 return res.status(400).json({
-                    success: false,
+                    success:false,
                     message: "Invalid username or password"
-                })
+                });
             }
-             //Success
-            return res.status(200).json({
-                success:true,
-                message: "Login successful",
-                user: {
-                    id: found.id,
-                    username: found.username,
-                    email: found.email
+            bcrypt.compare(password,found.password, function(err, isMatch){
+                if(err || !isMatch){
+                    return res.status(401).json({
+                        success: false,
+                        message: "Invalid username and password"
+                    });
                 }
+                 //Success
+                return res.status(200).json({
+                    success:true,
+                    message: "Login successful",
+                    user: {
+                        id: found.id,
+                        username: found.username,
+                        email: found.email
+                    }
+                })
             })
+
         }
     );
 
