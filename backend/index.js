@@ -3,6 +3,7 @@ const express = require('express')
 const cors = require('cors')
 const db = require('./database');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken')
 
 
 const app = express();
@@ -27,6 +28,41 @@ app.get('/health', (req, res) => {
         environment: process.env.NODE_ENV
     }); 
 });
+
+
+function authenticateToken(req, res, next){
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    
+    if(!token){
+        res.status(401).json({
+            success: false,
+            message: "Access denied. No token provided."
+        });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded)=>{
+        if (err){
+            return res.status(403).json({
+                success: false,
+                message: "Invalid or expired token"
+            });
+        }
+        req.user = decoded;
+        next();
+    });
+}
+
+// Dashboard route
+app.get('/dashboard', authenticateToken, (req, res)=>{
+    res.json({
+        success: true,
+        message: `Welcome  ${req.user.username}!`,
+        user: req.user
+    })
+})
+
+
 
 // Sign up setup
 
@@ -143,10 +179,19 @@ app.post('/login', (req,res) =>{
                         message: "Invalid username and password"
                     });
                 }
-                 //Success
+                 
+                //Assign JWT token
+                const token = jwt.sign(
+                    {userId: found.id, username: found.username},
+                    process.env.JWT_SECRET,
+                    {expiresIn:'24h'}
+                );
+
+                //Success
                 return res.status(200).json({
                     success:true,
                     message: "Login successful",
+                    token: token,
                     user: {
                         id: found.id,
                         username: found.username,
