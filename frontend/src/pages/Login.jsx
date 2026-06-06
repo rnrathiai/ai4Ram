@@ -20,6 +20,7 @@ function Login({onLoginSuccess}){
                 setError(data.message);
                 return
             }
+            localStorage.setItem('token', data.token);
             onLoginSuccess(data.user.username);
 
         } catch (err){
@@ -32,7 +33,7 @@ function Login({onLoginSuccess}){
 
 
     return(
-        <div className="login-container">
+        <div className="auth-container">
             <h2>Login</h2>
             <form>
                 <div className="form-group">
