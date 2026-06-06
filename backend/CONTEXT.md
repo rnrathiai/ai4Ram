@@ -1,7 +1,3 @@
-CONTEXT.md
-GitHub Wiki
-
-Copy
 AI4Ram — Learning Context & Project Status
 This file is updated at the end of every session. At the start of a new conversation say: "Read my context from: https://raw.githubusercontent.com/rnrathiai/ai4Ram/main/CONTEXT.md"
 
@@ -16,14 +12,15 @@ Coaching style: Learn by doing, code reviews, Jira tracking
 Repo: https://github.com/rnrathiai/ai4Ram
 Jira: https://rnrathiai.atlassian.net
 Stack: React (Vite) + Node.js/Express + SQLite + bcryptjs + jsonwebtoken
+Test framework: Jest + Supertest
 Frontend port: 5173
 Backend port: 3000
 
 ## Current Status
 Phase: 3 — Backend (Node/Express)
-PRs merged: 11
-Last session: Connected JWT to React — localStorage, Authorization header, protected dashboard, logout
-Next session: Jest unit tests setup (KAN-20)
+PRs merged: 12
+Last session: Jest unit tests setup — 9/9 tests passing for auth routes
+Next session: Happy path tests + app.js refactor (KAN-21)
 
 ## Phase Progress
 | Phase | Topic | Status |
@@ -45,6 +42,7 @@ Next session: Jest unit tests setup (KAN-20)
 | KAN-7 | Dashboard | ✅ Done |
 | KAN-24 | JWT Auth — Token Generation & Protected Routes | ✅ Done |
 | KAN-25 | Connect JWT to React Frontend | ✅ Done |
+| KAN-26 | Jest Unit Tests Setup — Auth Route Coverage | ✅ Done |
 | KAN-10 | Dev Setup/Express | 🟡 In Progress |
 | KAN-9 | QA Setup | 🔜 To Do |
 | KAN-11 | AI Setup | 🔜 To Do |
@@ -68,6 +66,8 @@ Next session: Jest unit tests setup (KAN-20)
 | Password hashing | bcryptjs | Pure JS, Windows compatible |
 | Token auth | JWT (jsonwebtoken) | Industry standard, stateless sessions |
 | Token storage | localStorage | Simple for learning, revisit cookies in security phase |
+| Unit testing | Jest + Supertest | Industry standard, fast, no browser needed |
+| E2E testing | Playwright (planned) | Separate repo, matches real QA team structure |
 | CSS | Plain CSS files | Keep it simple for learning |
 
 ## JavaScript Concepts Mastered
@@ -107,11 +107,21 @@ Next session: Jest unit tests setup (KAN-20)
 - Base64 encoding vs encryption (JWT payload is encoded, not encrypted)
 - Unix timestamps (iat, exp fields in JWT)
 
+## Testing Concepts Mastered
+- Jest — describe(), test(), expect(), toBe() matchers
+- Supertest — HTTP requests in tests without a browser
+- AAA pattern — Arrange, Act, Assert (= Given/When/Then)
+- Unit vs integration vs E2E — when to use each
+- Test repo strategy — unit tests in dev repo, E2E in separate repo
+- await in async tests — missing it causes undefined responses
+- set() for headers vs send() for body in supertest
+- 9 test cases covering signup, login, dashboard routes
+
 ## Git Workflow
 - Always branch from main → feature/description → PR → merge
 - Conventional commits: feat:, fix:, chore:, docs:
 - .gitignore: node_modules/, .env, *.db
-- 11 PRs merged to date
+- 12 PRs merged to date
 
 ## How to Start Each Session
 1. Ram shares this file URL or pastes key sections
@@ -122,9 +132,9 @@ Next session: Jest unit tests setup (KAN-20)
 ## Next 3 Sessions Plan
 | Session | Topic | Jira |
 |---------|-------|------|
-| Next | Jest unit tests setup | KAN-20 |
-| +1 | Sign Up / Login tests | KAN-21 |
-| +2 | AI Provider integration | KAN-22 |
+| Next | Happy path tests + app.js refactor | KAN-21 |
+| +1 | AI Provider integration | KAN-22 |
+| +2 | Deployment setup | KAN-12 |
 
 ## Context Store URLs
 - Confluence: Page ID 196818 — cloudId ce7ed5f1-9984-4f1b-ab5d-05c5bb19eafc
