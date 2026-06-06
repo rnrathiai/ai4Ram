@@ -4,7 +4,7 @@
   "description": "��#\u0000 \u0000A\u0000I\u00004\u0000R\u0000a\u0000m\u0000 \u0000\r\u0000 \u0000",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --detectOpenHandles"
   },
   "repository": {
     "type": "git",
@@ -29,5 +29,9 @@
   "devDependencies": {
     "jest": "^30.4.2",
     "supertest": "^7.2.2"
+  },
+  "jest" :{
+    "testEnvironment": "node",
+    "setupFiles": ["./tests/setup.js"]
   }
 }
