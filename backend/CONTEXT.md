@@ -18,9 +18,9 @@ Backend port: 3000
 
 ## Current Status
 Phase: 3 — Backend (Node/Express)
-PRs merged: 12
-Last session: Jest unit tests setup — 9/9 tests passing for auth routes
-Next session: Happy path tests + app.js refactor (KAN-21)
+PRs merged: 13
+Last session: Happy path tests + app.js refactor — 12/12 tests passing with test isolation
+Next session: AI Provider integration (KAN-22)
 
 ## Phase Progress
 | Phase | Topic | Status |
@@ -43,6 +43,7 @@ Next session: Happy path tests + app.js refactor (KAN-21)
 | KAN-24 | JWT Auth — Token Generation & Protected Routes | ✅ Done |
 | KAN-25 | Connect JWT to React Frontend | ✅ Done |
 | KAN-26 | Jest Unit Tests Setup — Auth Route Coverage | ✅ Done |
+| KAN-27 | Happy Path Tests + app.js Refactor | ✅ Done |
 | KAN-10 | Dev Setup/Express | 🟡 In Progress |
 | KAN-9 | QA Setup | 🔜 To Do |
 | KAN-11 | AI Setup | 🔜 To Do |
@@ -106,22 +107,27 @@ Next session: Happy path tests + app.js refactor (KAN-21)
 - Protected routes using middleware
 - Base64 encoding vs encryption (JWT payload is encoded, not encrypted)
 - Unix timestamps (iat, exp fields in JWT)
+- app.js vs index.js separation — app definition vs server start
 
 ## Testing Concepts Mastered
 - Jest — describe(), test(), expect(), toBe() matchers
 - Supertest — HTTP requests in tests without a browser
 - AAA pattern — Arrange, Act, Assert (= Given/When/Then)
-- Unit vs integration vs E2E — when to use each
+- Unit vs integration vs E2E testing — when to use each
 - Test repo strategy — unit tests in dev repo, E2E in separate repo
 - await in async tests — missing it causes undefined responses
 - set() for headers vs send() for body in supertest
-- 9 test cases covering signup, login, dashboard routes
+- beforeAll / afterAll — test lifecycle hooks
+- Test isolation — clean up before and after tests run
+- SQLite IN vs LIKE — case sensitivity gotcha
+- setupFiles in Jest config — loading env vars before tests
+- 12 test cases — negative and happy path coverage
 
 ## Git Workflow
 - Always branch from main → feature/description → PR → merge
 - Conventional commits: feat:, fix:, chore:, docs:
 - .gitignore: node_modules/, .env, *.db
-- 12 PRs merged to date
+- 13 PRs merged to date
 
 ## How to Start Each Session
 1. Ram shares this file URL or pastes key sections
@@ -132,9 +138,9 @@ Next session: Happy path tests + app.js refactor (KAN-21)
 ## Next 3 Sessions Plan
 | Session | Topic | Jira |
 |---------|-------|------|
-| Next | Happy path tests + app.js refactor | KAN-21 |
-| +1 | AI Provider integration | KAN-22 |
-| +2 | Deployment setup | KAN-12 |
+| Next | AI Provider integration | KAN-22 |
+| +1 | Deployment setup | KAN-12 |
+| +2 | CI/CD pipeline | KAN-13, KAN-18 |
 
 ## Context Store URLs
 - Confluence: Page ID 196818 — cloudId ce7ed5f1-9984-4f1b-ab5d-05c5bb19eafc
