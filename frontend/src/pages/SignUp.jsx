@@ -97,7 +97,7 @@ function SignUp(){
 
 
     return (
-        <div>
+        <div className='auth-container'>
             <h2>Create Account</h2>
             <form>
                 <div className="form-group">
