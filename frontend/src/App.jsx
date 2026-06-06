@@ -23,8 +23,7 @@ function App(){
   if (isLoggedIn){
     return(
       <div>
-        <Dashboard username={loggedInUser} />
-        <button onClick={handleLogout}>Logout</button>
+        <Dashboard username={loggedInUser} onLogout={handleLogout} />
       </div>
     )
   }

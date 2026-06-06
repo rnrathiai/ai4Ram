@@ -220,3 +220,6 @@ console.log("Server config loaded:");
 console.log("PORT:", PORT);
 console.log("NODE_ENV:", NODE_ENV);
 console.log("JWT_SECRET exists:", JWT_SECRET !== undefined);
+
+
+module.exports = app;
