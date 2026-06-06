@@ -1,3 +1,7 @@
+CONTEXT.md
+GitHub Wiki
+
+Copy
 AI4Ram — Learning Context & Project Status
 This file is updated at the end of every session. At the start of a new conversation say: "Read my context from: https://raw.githubusercontent.com/rnrathiai/ai4Ram/main/CONTEXT.md"
 
@@ -17,9 +21,9 @@ Backend port: 3000
 
 ## Current Status
 Phase: 3 — Backend (Node/Express)
-PRs merged: 10
-Last session: JWT tokens — token generation on login + authenticateToken middleware
-Next session: Connect JWT to React frontend (store in localStorage, send in headers)
+PRs merged: 11
+Last session: Connected JWT to React — localStorage, Authorization header, protected dashboard, logout
+Next session: Jest unit tests setup (KAN-20)
 
 ## Phase Progress
 | Phase | Topic | Status |
@@ -39,8 +43,9 @@ Next session: Connect JWT to React frontend (store in localStorage, send in head
 | KAN-5 | Sign Up | ✅ Done |
 | KAN-6 | Login | ✅ Done |
 | KAN-7 | Dashboard | ✅ Done |
-| KAN-10 | Dev Setup/Express | 🟡 In Progress |
 | KAN-24 | JWT Auth — Token Generation & Protected Routes | ✅ Done |
+| KAN-25 | Connect JWT to React Frontend | ✅ Done |
+| KAN-10 | Dev Setup/Express | 🟡 In Progress |
 | KAN-9 | QA Setup | 🔜 To Do |
 | KAN-11 | AI Setup | 🔜 To Do |
 | KAN-12 | Deployment | 🔜 To Do |
@@ -62,6 +67,7 @@ Next session: Connect JWT to React frontend (store in localStorage, send in head
 | Database | SQLite (sqlite3) | No server needed, good for learning |
 | Password hashing | bcryptjs | Pure JS, Windows compatible |
 | Token auth | JWT (jsonwebtoken) | Industry standard, stateless sessions |
+| Token storage | localStorage | Simple for learning, revisit cookies in security phase |
 | CSS | Plain CSS files | Keep it simple for learning |
 
 ## JavaScript Concepts Mastered
@@ -81,6 +87,10 @@ Next session: Connect JWT to React frontend (store in localStorage, send in head
 - Lifting state up, passing callbacks as props
 - CSS modules, className
 - fetch() from React to Express
+- useEffect — running code on component load, empty dependency array
+- localStorage — setItem, getItem, removeItem
+- Authorization header — Bearer token pattern
+- Shared CSS classes across components (auth-container)
 
 ## Backend Concepts Mastered
 - Express server setup, middleware (cors, express.json())
@@ -90,7 +100,7 @@ Next session: Connect JWT to React frontend (store in localStorage, send in head
 - SQL injection prevention
 - bcrypt hashing and comparison
 - Callback nesting pattern
-- .env and dotenv for secrets
+- .env and dotenv for secrets — path config for subfolders
 - JWT — token generation with jwt.sign(), verification with jwt.verify()
 - Custom middleware functions — authenticateToken pattern
 - Protected routes using middleware
@@ -98,10 +108,10 @@ Next session: Connect JWT to React frontend (store in localStorage, send in head
 - Unix timestamps (iat, exp fields in JWT)
 
 ## Git Workflow
-- Always branch from main → feature branch → PR → merge
-- Conventional commits: feat:, fix:, chore:
+- Always branch from main → feature/description → PR → merge
+- Conventional commits: feat:, fix:, chore:, docs:
 - .gitignore: node_modules/, .env, *.db
-- 10 PRs merged to date
+- 11 PRs merged to date
 
 ## How to Start Each Session
 1. Ram shares this file URL or pastes key sections
@@ -112,9 +122,9 @@ Next session: Connect JWT to React frontend (store in localStorage, send in head
 ## Next 3 Sessions Plan
 | Session | Topic | Jira |
 |---------|-------|------|
-| Next | Connect JWT to React frontend | KAN-7 |
-| +1 | Jest unit tests setup | KAN-20, KAN-21 |
-| +2 | Sign Up / Login tests | KAN-21 |
+| Next | Jest unit tests setup | KAN-20 |
+| +1 | Sign Up / Login tests | KAN-21 |
+| +2 | AI Provider integration | KAN-22 |
 
 ## Context Store URLs
 - Confluence: Page ID 196818 — cloudId ce7ed5f1-9984-4f1b-ab5d-05c5bb19eafc
