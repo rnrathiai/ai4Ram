@@ -1,8 +1,18 @@
-const supertest = require('supertest');
-const request = supertest.agent;
+const request = require('supertest');
+const app = require('../backend/app')
+const db = require("../backend/database");
 
-const app = require('../backend/index');
 
+
+let server;
+beforeAll(() => {
+    server = app.listen(0); // 0 = random available port
+});
+
+afterAll(async () => {
+    await new Promise((resolve) => server.close(resolve));
+    await new Promise((resolve) => db.close(resolve));
+});
 
 
 describe ('Auth Routes', ()=>{
@@ -89,3 +99,69 @@ describe('Dashboard routes', ()=>{
         expect(response.body.success).toBe(false);     
     });
 })
+
+
+describe("Happy path tests", ()=>{
+    beforeAll(async ()=>{
+        
+        await request(app)
+            .post('/signup')
+            .send({username:"TEST501", email: "test401@email.com", password: "Password1"});
+
+ 
+
+    });
+    afterAll(async ()=>{
+        await new Promise (resolve => setTimeout(resolve, 500))
+
+           // Clean up after tests finish
+        await new Promise((resolve, reject) => {
+            db.run(
+                'DELETE FROM users WHERE username IN (?, ?)',
+                ['TEST501', 'TEST502'],
+                (err) => err ? reject(err) : resolve()
+            );
+        });
+
+    });
+
+
+
+
+
+    test("valid signup returns 201", async ()=>{
+        const response = await request(app)
+            .post("/signup")
+            .send({username:"TEST502", email: "test402@email.com", password: "Password1"})
+        
+        expect(response.status).toBe(201);
+        expect(response.body.success).toBe(true);
+
+    });
+
+    test("valid login returns 200 with token", async ()=>{
+        const response = await request(app)
+            .post('/login')
+            .send({username:"TEST501", password: "Password1"});
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+            expect(response.body.token).toBeDefined();
+    });
+
+    test('valid token accesses dashboard', async ()=>{
+        const loginResponse = await request(app)
+            .post('/login')
+            .send({username:"TEST501", password: "Password1"});
+
+        const token = loginResponse.body.token;
+
+        const response = await request(app)
+            .get('/dashboard')
+            .set('Authorization', `Bearer ${token}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body.success).toBe(true);
+
+    })
+});
