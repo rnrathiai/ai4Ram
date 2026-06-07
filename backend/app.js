@@ -12,7 +12,10 @@ const PORT = process.env.PORT || 3000 ;
 
 //Middleware
 app.use(cors({
-    origin: 'http://localhost:5173'
+    origin: [
+        'http://localhost:5173',
+        'https://storied-frangollo-948f09.netlify.app'
+    ]
 }));
 
 
