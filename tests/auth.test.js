@@ -56,6 +56,13 @@ describe('Sign up routes', ()=>{
 });
 
 describe('Login routes', ()=>{
+
+    beforeAll(async () => {
+        await request(app)
+            .post('/signup')
+            .send({ username: 'logintest', email: 'logintest@test.com', password: 'Password1' });
+    });
+
     test('missing fields returns 400', async ()=>{
         const response = await request(app)
             .post('/login')
@@ -81,6 +88,19 @@ describe('Login routes', ()=>{
         expect(response.status).toBe(400);
         expect(response.body.success).toBe(false);       
     });
+
+
+    afterAll(async () => {
+        await new Promise((resolve, reject) => {
+            db.run('DELETE FROM users WHERE username = ?',
+                ['LOGINTEST'],
+                (err) => err ? reject(err) : resolve()
+            );
+        });
+    });
+
+
+
 });
 describe('Dashboard routes', ()=>{
     test('no token returns 401', async ()=>{
