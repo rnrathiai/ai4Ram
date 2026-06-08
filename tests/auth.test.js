@@ -75,7 +75,7 @@ describe('Login routes', ()=>{
     test('wrong password returns 401', async ()=>{
         const response = await request(app)
             .post('/login')
-            .send({username: 'Ram21', password:"Wrongpass1"});
+            .send({username: 'logintest', password:"Wrongpass1"});
 
         expect(response.status).toBe(401);
         expect(response.body.success).toBe(false);        
