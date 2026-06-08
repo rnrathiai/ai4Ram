@@ -13,18 +13,17 @@ Repo: https://github.com/rnrathiai/ai4Ram
 Jira: https://rnrathiai.atlassian.net
 Stack: React (Vite) + Node.js/Express + SQLite + bcryptjs + jsonwebtoken
 Test framework: Jest + Supertest
-Frontend port: 5173 (local) / Netlify (production)
-Backend port: 3000 (local) / Render (production)
-
-## Production URLs
-Frontend: https://storied-frangollo-948f09.netlify.app
-Backend: https://ai4ram.onrender.com
+CI/CD: GitHub Actions (.github/workflows/ci.yml)
+Frontend (local): http://localhost:5173
+Backend (local): http://localhost:3000
+Frontend (production): https://storied-frangollo-948f09.netlify.app
+Backend (production): https://ai4ram.onrender.com
 
 ## Current Status
-Phase: 5 — Deployment & CI/CD 🟡
-PRs merged: 14
-Last session: Deployment — Frontend on Netlify, Backend on Render, fully working end to end
-Next session: CI/CD pipeline (KAN-13, KAN-18)
+Phase: 5 — Deployment & CI/CD (security improvements)
+PRs merged: 16
+Last session: Security — JWT_SECRET moved to GitHub Secrets (KAN-30)
+Next session: CD Pipeline — auto deploy on merge (KAN-19)
 
 ## Phase Progress
 | Phase | Topic | Status |
@@ -49,16 +48,18 @@ Next session: CI/CD pipeline (KAN-13, KAN-18)
 | KAN-26 | Jest Unit Tests Setup — Auth Route Coverage | ✅ Done |
 | KAN-27 | Happy Path Tests + app.js Refactor | ✅ Done |
 | KAN-28 | Deployment — Netlify + Render | ✅ Done |
-| KAN-10 | Dev Setup/Express | 🟡 In Progress |
-| KAN-13 | CI/CD | 🔜 To Do — Next session |
-| KAN-18 | CI Pipeline | 🔜 To Do — Next session |
-| KAN-22 | AI Provider | 🔜 To Do — After June 23rd |
+| KAN-29 | CI Pipeline — GitHub Actions with Jest Tests | ✅ Done |
+| KAN-30 | Security — Move JWT_SECRET to GitHub Secrets | ✅ Done |
+| KAN-12 | Deployment | ✅ Done |
+| KAN-13 | CI/CD | ✅ Done |
+| KAN-18 | CI Pipeline | ✅ Done |
+| KAN-19 | CD Pipeline | 🔜 To Do — Next session |
+| KAN-10 | Code Cleanup — Routes/Controllers | 🔜 To Do |
+| KAN-14 | Rate Limiting + Input Sanitization | 🔜 To Do |
+| KAN-22 | AI Provider | 🔜 To Do — After KAN-19, KAN-10, KAN-14 |
 | KAN-9 | QA Setup | 🔜 To Do |
 | KAN-11 | AI Setup | 🔜 To Do |
-| KAN-12 | Deployment | ✅ Done |
-| KAN-14 | Performance | 🔜 To Do |
 | KAN-15 | Performance Epic | 🔜 To Do |
-| KAN-19 | CD Pipeline | 🔜 To Do |
 | KAN-20 | Test Framework | 🔜 To Do |
 | KAN-21 | Sign Up Tests | 🔜 To Do |
 | KAN-23 | Staging/Prod Envs | 🔜 To Do |
@@ -76,7 +77,9 @@ Next session: CI/CD pipeline (KAN-13, KAN-18)
 | E2E testing | Playwright (planned) | Separate repo, matches real QA team structure |
 | Frontend hosting | Netlify | Free, GitHub integration, built for React |
 | Backend hosting | Render | Free tier, persistent server, Node.js support |
-| AI Provider | Anthropic Claude API (planned) | After June 23rd |
+| CI/CD | GitHub Actions | Built into GitHub, free, runs on every push |
+| Secrets management | GitHub Secrets | Encrypted, never visible in code or logs |
+| AI Provider | Anthropic Claude API (planned) | $5 credit — no Claude Pro needed |
 | CSS | Plain CSS files | Keep it simple for learning |
 
 ## JavaScript Concepts Mastered
@@ -132,8 +135,9 @@ Next session: CI/CD pipeline (KAN-13, KAN-18)
 - SQLite IN vs LIKE — case sensitivity gotcha
 - setupFiles in Jest config — loading env vars before tests
 - 12 test cases — negative and happy path coverage
+- CI vs local database — fresh DB on CI, persistent locally
 
-## Deployment Concepts Mastered
+## Deployment & CI/CD Concepts Mastered
 - Netlify — deploying React/Vite apps, build settings, env vars
 - Render — deploying Node.js/Express, env vars, build commands
 - CORS — why it exists, how to configure multiple origins
@@ -141,12 +145,17 @@ Next session: CI/CD pipeline (KAN-13, KAN-18)
 - sqlite3 GLIBC compatibility — build from source fix
 - Node.js version pinning via .node-version file
 - BOM encoding issues on Windows (Out-File -Encoding ascii)
+- GitHub Actions — workflow files, jobs, steps, triggers
+- GitHub Secrets — encrypted secrets, ${{ secrets.NAME }} syntax
+- Conventional commits — feat:, fix:, chore:, docs:, test:
+- YAML syntax — name, on, jobs, runs-on, steps, uses, run, env
+- Fresh database on CI vs persistent local database
 
 ## Git Workflow
 - Always branch from main → feature/description → PR → merge
-- Conventional commits: feat:, fix:, chore:, docs:
+- Conventional commits: feat:, fix:, chore:, docs:, test:
 - .gitignore: node_modules/, .env, *.db
-- 14 PRs merged to date
+- 16 PRs merged to date
 
 ## How to Start Each Session
 1. Ram shares this file URL or pastes key sections
@@ -155,13 +164,12 @@ Next session: CI/CD pipeline (KAN-13, KAN-18)
 4. Dive into next topic
 
 ## Session Plan
-| When | Topic | Jira |
-|------|-------|------|
-| Next | CI/CD pipeline | KAN-13, KAN-18 |
-| Before June 23 | Buffer / cleanup | KAN-10 |
-| After June 23 | AI Provider integration | KAN-22 |
-| After June 23 | Chat UI in React | KAN-11 |
-| After June 23 | AI tests | KAN-9 |
+| Session | Topic | Jira |
+|---------|-------|------|
+| Next | CD Pipeline — auto deploy on merge | KAN-19 |
+| +1 | Code cleanup — routes/controllers structure | KAN-10 |
+| +2 | Rate limiting + input sanitization | KAN-14 |
+| After above | Add $5 Anthropic credit → AI integration | KAN-22 |
 
 ## Context Store URLs
 - Confluence: Page ID 196818 — cloudId ce7ed5f1-9984-4f1b-ab5d-05c5bb19eafc
