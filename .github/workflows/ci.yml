@@ -28,5 +28,5 @@ jobs:
       - name: Run Tests
         run: npm test
         env:
-          JWT_SECRET: test_secret_for_ci
+          JWT_SECRET: ${{secrets.JWT_SECRET}}
           NODE_ENV: test
