@@ -27,3 +27,4 @@ jobs:
         env:
           JWT_SECRET: test_secret_for_ci
           NODE_ENV: test
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
