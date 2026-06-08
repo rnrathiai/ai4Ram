@@ -30,3 +30,12 @@ jobs:
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           NODE_ENV: test
+  
+  deploy:
+    runs-on: ubantu_latest
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.eventname == 'push'
+    steps:
+      - name: Trigger Render deploy
+        run: |
+          curl -X POST ${{secrets.RENDER_DEPLOY_HOOK}}
