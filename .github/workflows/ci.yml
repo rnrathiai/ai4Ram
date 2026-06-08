@@ -33,10 +33,10 @@ jobs:
   
   # CD Pipeline — triggers deploy on merge to main
   deploy:
-    runs-on: ubantu_latest
+    runs-on: ubuntu_latest
     needs: test
-    if: github.ref == 'refs/heads/main' && github.eventname == 'push'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
       - name: Trigger Render deploy
         run: |
-          curl -X POST ${{secrets.RENDER_DEPLOY_HOOK}}
+          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
