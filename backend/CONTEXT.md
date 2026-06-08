@@ -13,23 +13,27 @@ Repo: https://github.com/rnrathiai/ai4Ram
 Jira: https://rnrathiai.atlassian.net
 Stack: React (Vite) + Node.js/Express + SQLite + bcryptjs + jsonwebtoken
 Test framework: Jest + Supertest
-Frontend port: 5173
-Backend port: 3000
+Frontend port: 5173 (local) / Netlify (production)
+Backend port: 3000 (local) / Render (production)
+
+## Production URLs
+Frontend: https://storied-frangollo-948f09.netlify.app
+Backend: https://ai4ram.onrender.com
 
 ## Current Status
-Phase: 3 — Backend (Node/Express)
-PRs merged: 13
-Last session: Happy path tests + app.js refactor — 12/12 tests passing with test isolation
-Next session: AI Provider integration (KAN-22)
+Phase: 5 — Deployment & CI/CD 🟡
+PRs merged: 14
+Last session: Deployment — Frontend on Netlify, Backend on Render, fully working end to end
+Next session: CI/CD pipeline (KAN-13, KAN-18)
 
 ## Phase Progress
 | Phase | Topic | Status |
 |-------|-------|--------|
 | Phase 1 | Foundation (JS, Git, Env) | ✅ Complete |
 | Phase 2 | Frontend (React) | ✅ Complete |
-| Phase 3 | Backend (Node/Express) | 🟡 In Progress |
-| Phase 4 | QA & Testing | 🔜 Upcoming |
-| Phase 5 | Deployment & CI/CD | 🔜 Upcoming |
+| Phase 3 | Backend (Node/Express) | ✅ Complete |
+| Phase 4 | QA & Testing | ✅ Complete |
+| Phase 5 | Deployment & CI/CD | 🟡 In Progress |
 
 ## Jira Tickets
 | Ticket | Feature | Status |
@@ -44,18 +48,19 @@ Next session: AI Provider integration (KAN-22)
 | KAN-25 | Connect JWT to React Frontend | ✅ Done |
 | KAN-26 | Jest Unit Tests Setup — Auth Route Coverage | ✅ Done |
 | KAN-27 | Happy Path Tests + app.js Refactor | ✅ Done |
+| KAN-28 | Deployment — Netlify + Render | ✅ Done |
 | KAN-10 | Dev Setup/Express | 🟡 In Progress |
+| KAN-13 | CI/CD | 🔜 To Do — Next session |
+| KAN-18 | CI Pipeline | 🔜 To Do — Next session |
+| KAN-22 | AI Provider | 🔜 To Do — After June 23rd |
 | KAN-9 | QA Setup | 🔜 To Do |
 | KAN-11 | AI Setup | 🔜 To Do |
-| KAN-12 | Deployment | 🔜 To Do |
-| KAN-13 | CI/CD | 🔜 To Do |
+| KAN-12 | Deployment | ✅ Done |
 | KAN-14 | Performance | 🔜 To Do |
 | KAN-15 | Performance Epic | 🔜 To Do |
-| KAN-18 | CI Pipeline | 🔜 To Do |
 | KAN-19 | CD Pipeline | 🔜 To Do |
 | KAN-20 | Test Framework | 🔜 To Do |
 | KAN-21 | Sign Up Tests | 🔜 To Do |
-| KAN-22 | AI Provider | 🔜 To Do |
 | KAN-23 | Staging/Prod Envs | 🔜 To Do |
 
 ## Tech Stack & Key Decisions
@@ -69,6 +74,9 @@ Next session: AI Provider integration (KAN-22)
 | Token storage | localStorage | Simple for learning, revisit cookies in security phase |
 | Unit testing | Jest + Supertest | Industry standard, fast, no browser needed |
 | E2E testing | Playwright (planned) | Separate repo, matches real QA team structure |
+| Frontend hosting | Netlify | Free, GitHub integration, built for React |
+| Backend hosting | Render | Free tier, persistent server, Node.js support |
+| AI Provider | Anthropic Claude API (planned) | After June 23rd |
 | CSS | Plain CSS files | Keep it simple for learning |
 
 ## JavaScript Concepts Mastered
@@ -92,6 +100,7 @@ Next session: AI Provider integration (KAN-22)
 - localStorage — setItem, getItem, removeItem
 - Authorization header — Bearer token pattern
 - Shared CSS classes across components (auth-container)
+- Environment variables in Vite — import.meta.env.VITE_*
 
 ## Backend Concepts Mastered
 - Express server setup, middleware (cors, express.json())
@@ -108,6 +117,7 @@ Next session: AI Provider integration (KAN-22)
 - Base64 encoding vs encryption (JWT payload is encoded, not encrypted)
 - Unix timestamps (iat, exp fields in JWT)
 - app.js vs index.js separation — app definition vs server start
+- CORS configuration — allowing multiple origins
 
 ## Testing Concepts Mastered
 - Jest — describe(), test(), expect(), toBe() matchers
@@ -123,11 +133,20 @@ Next session: AI Provider integration (KAN-22)
 - setupFiles in Jest config — loading env vars before tests
 - 12 test cases — negative and happy path coverage
 
+## Deployment Concepts Mastered
+- Netlify — deploying React/Vite apps, build settings, env vars
+- Render — deploying Node.js/Express, env vars, build commands
+- CORS — why it exists, how to configure multiple origins
+- Environment variables — VITE_API_URL for frontend, .env for backend
+- sqlite3 GLIBC compatibility — build from source fix
+- Node.js version pinning via .node-version file
+- BOM encoding issues on Windows (Out-File -Encoding ascii)
+
 ## Git Workflow
 - Always branch from main → feature/description → PR → merge
 - Conventional commits: feat:, fix:, chore:, docs:
 - .gitignore: node_modules/, .env, *.db
-- 13 PRs merged to date
+- 14 PRs merged to date
 
 ## How to Start Each Session
 1. Ram shares this file URL or pastes key sections
@@ -135,12 +154,14 @@ Next session: AI Provider integration (KAN-22)
 3. Quick 3-question warmup on last session
 4. Dive into next topic
 
-## Next 3 Sessions Plan
-| Session | Topic | Jira |
-|---------|-------|------|
-| Next | AI Provider integration | KAN-22 |
-| +1 | Deployment setup | KAN-12 |
-| +2 | CI/CD pipeline | KAN-13, KAN-18 |
+## Session Plan
+| When | Topic | Jira |
+|------|-------|------|
+| Next | CI/CD pipeline | KAN-13, KAN-18 |
+| Before June 23 | Buffer / cleanup | KAN-10 |
+| After June 23 | AI Provider integration | KAN-22 |
+| After June 23 | Chat UI in React | KAN-11 |
+| After June 23 | AI tests | KAN-9 |
 
 ## Context Store URLs
 - Confluence: Page ID 196818 — cloudId ce7ed5f1-9984-4f1b-ab5d-05c5bb19eafc
