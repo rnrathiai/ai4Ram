@@ -23,6 +23,8 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
+    "express-validator": "^7.3.2",
     "jsonwebtoken": "^9.0.3",
     "sqlite3": "^6.0.1"
   },
@@ -30,8 +32,10 @@
     "jest": "^30.4.2",
     "supertest": "^7.2.2"
   },
-  "jest" :{
+  "jest": {
     "testEnvironment": "node",
-    "setupFiles": ["./tests/setup.js"]
+    "setupFiles": [
+      "./tests/setup.js"
+    ]
   }
 }
