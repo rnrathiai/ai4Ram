@@ -1,6 +1,7 @@
 const db = require('../database');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { body, validationResult } = require('express-validator');
 
 exports.signup = (req, res) => {
     const { username, email, password } = req.body;
