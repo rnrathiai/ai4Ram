@@ -20,7 +20,7 @@ describe ('Auth Routes', ()=>{
     // This is to test missing email and password and user has shared only username
     test('POST /signup should return 400 if fields are missing', async ()=>{
         const response = await request(app)
-            .post('/signup')
+            .post('/auth/signup')
             .send({username: 'testuser'});
         
             expect(response.status).toBe(400);
@@ -31,7 +31,7 @@ describe ('Auth Routes', ()=>{
 describe('Sign up routes', ()=>{
     test('missing username returns 400', async()=>{
         const response = await request(app)
-            .post('/signup')
+            .post('/auth/signup')
             .send({email:"ram31@email.com", password: "Password1"});
 
         expect(response.status).toBe(400);
@@ -39,7 +39,7 @@ describe('Sign up routes', ()=>{
     });
     test('missing email returns 400', async ()=>{
         const response = await request(app)
-            .post('/signup')
+            .post('/auth/signup')
             .send({username:"Ram31", password: "Passowrd1"});
         
             expect(response.status).toBe(400);
@@ -47,7 +47,7 @@ describe('Sign up routes', ()=>{
     });
     test('missing password returns 400', async ()=>{
         const response = await request(app)
-            .post('/signup')
+            .post('/auth/signup')
             .send({username:"Ram31", email:"ram31@email.com"});
         
         expect(response.status).toBe(400);
@@ -55,17 +55,65 @@ describe('Sign up routes', ()=>{
     });
 });
 
+describe('Sign up validation', () => {
+    test('username too short returns 400', async () => {
+        const response = await request(app)
+            .post('/auth/signup')
+            .send({ username: 'ab', email: 'test@test.com', password: 'password123' });
+
+        expect(response.status).toBe(400);
+        expect(response.body.success).toBe(false);
+    });
+
+    test('username too long returns 400', async () => {
+        const response = await request(app)
+            .post('/auth/signup')
+            .send({ username: 'aaaaabbbbbcccccddddde', email: 'test@test.com', password: 'password123' });
+
+        expect(response.status).toBe(400);
+        expect(response.body.success).toBe(false);
+    });
+
+    test('username with special characters returns 400', async () => {
+        const response = await request(app)
+            .post('/auth/signup')
+            .send({ username: '<script>', email: 'test@test.com', password: 'password123' });
+
+        expect(response.status).toBe(400);
+        expect(response.body.success).toBe(false);
+    });
+
+    test('invalid email format returns 400', async () => {
+        const response = await request(app)
+            .post('/auth/signup')
+            .send({ username: 'validuser', email: 'notanemail', password: 'password123' });
+
+        expect(response.status).toBe(400);
+        expect(response.body.success).toBe(false);
+    });
+
+    test('password too short returns 400', async () => {
+        const response = await request(app)
+            .post('/auth/signup')
+            .send({ username: 'validuser', email: 'test@test.com', password: '123' });
+
+        expect(response.status).toBe(400);
+        expect(response.body.success).toBe(false);
+    });
+});
+
+
 describe('Login routes', ()=>{
 
     beforeAll(async () => {
         await request(app)
-            .post('/signup')
+            .post('/auth/signup')
             .send({ username: 'logintest', email: 'logintest@test.com', password: 'Password1' });
     });
 
     test('missing fields returns 400', async ()=>{
         const response = await request(app)
-            .post('/login')
+            .post('/auth/login')
             .send({username: 'Ram31'});
 
         expect(response.status).toBe(400);
@@ -74,7 +122,7 @@ describe('Login routes', ()=>{
     });
     test('wrong password returns 401', async ()=>{
         const response = await request(app)
-            .post('/login')
+            .post('/auth/login')
             .send({username: 'logintest', password:"Wrongpass1"});
 
         expect(response.status).toBe(401);
@@ -82,7 +130,7 @@ describe('Login routes', ()=>{
     });
     test('user not found returns 400', async ()=>{
         const response = await request(app)
-            .post('/login')
+            .post('/auth/login')
             .send({username: 'Ram51', password:"Password1"});
 
         expect(response.status).toBe(400);
@@ -125,7 +173,7 @@ describe("Happy path tests", ()=>{
     beforeAll(async ()=>{
         
         await request(app)
-            .post('/signup')
+            .post('/auth/signup')
             .send({username:"TEST501", email: "test401@email.com", password: "Password1"});
 
  
@@ -151,7 +199,7 @@ describe("Happy path tests", ()=>{
 
     test("valid signup returns 201", async ()=>{
         const response = await request(app)
-            .post("/signup")
+            .post("/auth/signup")
             .send({username:"TEST502", email: "test402@email.com", password: "Password1"})
         
         expect(response.status).toBe(201);
@@ -161,7 +209,7 @@ describe("Happy path tests", ()=>{
 
     test("valid login returns 200 with token", async ()=>{
         const response = await request(app)
-            .post('/login')
+            .post('/auth/login')
             .send({username:"TEST501", password: "Password1"});
 
             expect(response.status).toBe(200);
@@ -171,7 +219,7 @@ describe("Happy path tests", ()=>{
 
     test('valid token accesses dashboard', async ()=>{
         const loginResponse = await request(app)
-            .post('/login')
+            .post('/auth/login')
             .send({username:"TEST501", password: "Password1"});
 
         const token = loginResponse.body.token;
